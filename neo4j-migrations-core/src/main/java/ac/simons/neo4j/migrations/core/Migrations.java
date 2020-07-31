@@ -49,12 +49,33 @@ public final class Migrations {
 	private final DiscoveryService discoveryService;
 	private final ChainBuilder chainBuilder;
 
+	/**
+	 * Creates a new instance of Neo4j migrations based on the given config and the connected drivers, using the default
+	 * discoveres necessary to find Cypher and Class based migrations.
+	 *
+	 * @param config
+	 * @param driver
+	 */
 	public Migrations(MigrationsConfig config, Driver driver) {
+		this(config, driver, Discoverer.getDefaultJavaBasedMigrationDiscoverer(),
+			Discoverer.getDefaultCypherBasedMigrationDiscoverer());
+	}
 
+	/**
+	 * This constructor allows the discovery service to be specified. Bare in mind that depending on what discoverers
+	 * are passed to this constructor, Neo4j Migrations may or may not be able to find all of your migrations inside
+	 * Cypher scripts and packages. Use it at your own discretion.
+	 *
+	 * @param config      The configuration to use
+	 * @param driver      A connected driver
+	 * @param discoverers The discoveres to use
+	 * @since 0.0.13
+	 */
+	public Migrations(MigrationsConfig config, Driver driver, Discoverer... discoverers) {
 		this.config = config;
 		this.driver = driver;
 
-		this.discoveryService = new DiscoveryService();
+		this.discoveryService = new DiscoveryService(discoverers);
 		this.chainBuilder = new ChainBuilder();
 
 		this.context = new DefaultMigrationContext(this.config, this.driver);
@@ -150,7 +171,8 @@ public final class Migrations {
 		}
 	}
 
-	private MigrationVersion recordApplication(String neo4jUser, MigrationVersion previousVersion, Migration appliedMigration,
+	private MigrationVersion recordApplication(String neo4jUser, MigrationVersion previousVersion,
+		Migration appliedMigration,
 		long executionTime) {
 
 		try (Session session = context.getSession()) {

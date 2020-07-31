@@ -15,6 +15,7 @@
  */
 package ac.simons.neo4j.migrations.core;
 
+import java.net.URL;
 import java.util.Optional;
 
 /**
@@ -24,6 +25,10 @@ import java.util.Optional;
  * @since 0.0.1
  */
 public interface Migration {
+
+	static Migration at(URL url) {
+		return new CypherBasedMigration(url);
+	}
 
 	/**
 	 * @return The version.
@@ -45,6 +50,15 @@ public interface Migration {
 	 */
 	default Optional<String> getChecksum() {
 		return Optional.empty();
+	}
+
+	/**
+	 * @return The {@link URL} of the migration if applicable.
+	 * @throws UnsupportedOperationException When there's no cannocial URL of this migration
+	 * @since 0.0.13
+	 */
+	default URL getUrl() {
+		throw new UnsupportedOperationException("There is no known URL of this migration.");
 	}
 
 	/**

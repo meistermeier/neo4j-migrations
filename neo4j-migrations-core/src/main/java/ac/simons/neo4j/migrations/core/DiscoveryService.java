@@ -31,10 +31,13 @@ final class DiscoveryService {
 
 	private final List<Discoverer> discoverers;
 
-	DiscoveryService() {
-		this.discoverers = Collections.unmodifiableList(
-			Arrays.asList(new Discoverer.JavaBasedMigrationDiscoverer(),
-				new Discoverer.CypherBasedMigrationDiscoverer()));
+	/**
+	 * Configures a discovery service with a list of discoveres.
+	 *
+	 * @param discoverers The discoverers to use
+	 */
+	DiscoveryService(Discoverer... discoverers) {
+		this.discoverers = Collections.unmodifiableList(Arrays.asList(discoverers));
 	}
 
 	/**

@@ -106,6 +106,15 @@ final class CypherBasedMigration implements Migration {
 		return Optional.of(availableChecksum);
 	}
 
+	/**
+	 * @return The {@link URL} of the Cypher Script.
+	 * @since 0.0.13
+	 */
+	@Override
+	public URL getUrl() {
+		return url;
+	}
+
 	String computeChecksum() {
 		final CRC32 crc32 = new CRC32();
 

@@ -51,9 +51,14 @@ public final class Defaults {
 	static final String[] PACKAGES_TO_SCAN = new String[0];
 
 	/**
+	 * Default location to scan.
+	 */
+	public static final String LOCATION_TO_SCAN = "classpath:neo4j/migrations";
+
+	/**
 	 * Default locations to scan.
 	 */
-	public static final String[] LOCATIONS_TO_SCAN = new String[] { "classpath:neo4j/migrations" };
+	public static final String[] LOCATIONS_TO_SCAN = new String[] { LOCATION_TO_SCAN };
 
 	public static final String TRANSACTION_MODE_VALUE = "PER_MIGRATION";
 

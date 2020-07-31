@@ -42,7 +42,23 @@ import java.util.stream.Collectors;
  * @soundtrack Motörhead - 1916
  * @since 0.0.3
  */
-interface Discoverer {
+public interface Discoverer {
+
+	/**
+	 * @return the default discoverer used to find Cypher based migrations
+	 * @since 0.0.13
+	 */
+	static Discoverer getDefaultCypherBasedMigrationDiscoverer() {
+		return new CypherBasedMigrationDiscoverer();
+	}
+
+	/**
+	 * @return the default discoverer used to find Java based migrations
+	 * @since 0.0.13
+	 */
+	static Discoverer getDefaultJavaBasedMigrationDiscoverer() {
+		return new JavaBasedMigrationDiscoverer();
+	}
 
 	/**
 	 * Discover migrations within the given context.
